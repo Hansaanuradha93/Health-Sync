@@ -1,0 +1,72 @@
+services:
+  authentication-service:
+    build:
+      context: ./authentication-service
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=authentication-db
+      - DB_PORT=5432
+      - DB_USER=auth-user
+      - DB_PASSWORD=password
+      - DB_NAME=auth_db
+    depends_on:
+      - authentication-db
+
+  patient-record-service:
+    build:
+      context: ./patient-record-service
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=patient-record-db
+      - DB_PORT=5432
+      - DB_USER=patient-user
+      - DB_PASSWORD=password
+      - DB_NAME=patient_db
+    depends_on:
+      - patient-record-db
+
+  notification-service:
+    build:
+      context: ./notification-service
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=notification-db
+      - DB_PORT=5432
+      - DB_USER=notification-user
+      - DB_PASSWORD=password
+      - DB_NAME=notification_db
+    depends_on:
+      - notification-db
+
+  authentication-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: auth-user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: auth_db
+    ports:
+      - "5433:5432"
+
+  patient-record-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: patient-user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: patient_db
+    ports:
+      - "5434:5432"
+
+  notification-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: notification-user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: notification_db
+    ports:
+      - "5435:5432"

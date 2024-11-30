@@ -22,7 +22,8 @@ app.use((req, res, next) => {
 });
 
 /// 2). ROUTES
-app.use("/api/v1", authRouter);
+app.use("/api/v1/auth", authRouter);
+
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on the server`, 404));
 });

@@ -1,26 +1,17 @@
-const { Pool } = require("pg");
-const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 
-dotenv.config({ path: "./config.env" });
-
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
-const connectDatabase = async () => {
+/// Connect to the database
+exports.connectDB = async () => {
+  /// Define the database connection URI
+  const DB = process.env.DATABASE.replace(
+    "<PASSWORD>",
+    process.env.DATABASE_PASSWORD
+  );
+  /// Connect to the database using mongoose
   try {
-    const client = await pool.connect();
-    console.log("Database connected successfully");
-    client.release();
+    await mongoose.connect(DB);
+    console.log("DB connection successful!");
   } catch (err) {
-    console.error("Database connection error:", err);
+    console.error("DB connection error:", err.message);
   }
 };
-
-connectDatabase();
-
-module.exports = pool;

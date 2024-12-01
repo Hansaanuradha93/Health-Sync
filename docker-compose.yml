@@ -3,7 +3,7 @@ services:
     build:
       context: ./authentication-service
     ports:
-      - "3001:3000"
+      - "3001:3001"
     environment:
       - NODE_ENV=development
       - DB_HOST=authentication-db
@@ -13,12 +13,14 @@ services:
       - DB_NAME=auth_db
     depends_on:
       - authentication-db
+    networks:
+      - health-sync-network
 
   patient-record-service:
     build:
       context: ./patient-record-service
     ports:
-      - "3002:3000"
+      - "3002:3002"
     environment:
       - NODE_ENV=development
       - DB_HOST=patient-record-db
@@ -28,12 +30,14 @@ services:
       - DB_NAME=patient_db
     depends_on:
       - patient-record-db
+    networks:
+      - health-sync-network
 
   notification-service:
     build:
       context: ./notification-service
     ports:
-      - "3003:3000"
+      - "3003:3003"
     environment:
       - NODE_ENV=development
       - DB_HOST=notification-db
@@ -43,6 +47,8 @@ services:
       - DB_NAME=notification_db
     depends_on:
       - notification-db
+    networks:
+      - health-sync-network
 
   authentication-db:
     image: postgres:latest
@@ -50,10 +56,12 @@ services:
       POSTGRES_USER: auth-user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: auth_db
-    ports:
-      - "5433:5432"
     volumes:
       - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - health-sync-network
+    ports:
+      - "5433:5432" 
 
   patient-record-db:
     image: postgres:latest
@@ -61,10 +69,12 @@ services:
       POSTGRES_USER: patient-user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: patient_db
-    ports:
-      - "5434:5432"
     volumes:
       - patient-db-data:/var/lib/postgresql/data
+    networks:
+      - health-sync-network
+    ports:
+      - "5434:5432"
 
   notification-db:
     image: postgres:latest
@@ -72,12 +82,18 @@ services:
       POSTGRES_USER: notification-user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: notification_db
-    ports:
-      - "5435:5432"
     volumes:
       - notification-db-data:/var/lib/postgresql/data
+    networks:
+      - health-sync-network
+    ports:
+      - "5435:5432"
 
 volumes:
   auth-db-data:
   patient-db-data:
   notification-db-data:
+
+networks:
+  health-sync-network:
+    driver: bridge

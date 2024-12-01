@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const dotenv = require("dotenv");
-const DbManager = require("./db/dbManager");
+const { connectDB } = require("./db/db");
 
 /// Handle all uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -15,17 +15,24 @@ dotenv.config({ path: "./config.env" });
 /// Require the app
 const app = require("./app");
 
-/// Initialize the database
-const initializeDatabase = async () => {
-  try {
-    await DbManager.createUserTable();
-    console.log("Database setup complete.");
-  } catch (err) {
-    console.error("Error during database setup:", err.message);
-  }
-};
+// /// Define the database connection URI
+// const DB = process.env.DATABASE.replace(
+//   "<PASSWORD>",
+//   process.env.DATABASE_PASSWORD
+// );
 
-initializeDatabase();
+//
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect(DB);
+//     console.log("DB connection successful!");
+//   } catch (err) {
+//     console.error("DB connection error:", err.message);
+//   }
+// };
+
+/// Connect to the database
+connectDB();
 
 /// Run the server
 const port = process.env.PORT || 3001;

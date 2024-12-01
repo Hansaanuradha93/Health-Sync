@@ -6,13 +6,6 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=development
-      - DB_HOST=authentication-db
-      - DB_PORT=5432
-      - DB_USER=auth-user
-      - DB_PASSWORD=password
-      - DB_NAME=auth_db
-    depends_on:
-      - authentication-db
     networks:
       - health-sync-network
 
@@ -49,19 +42,6 @@ services:
       - notification-db
     networks:
       - health-sync-network
-
-  authentication-db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: auth-user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: auth_db
-    volumes:
-      - auth-db-data:/var/lib/postgresql/data
-    networks:
-      - health-sync-network
-    ports:
-      - "5433:5432" 
 
   patient-record-db:
     image: postgres:latest

@@ -16,13 +16,6 @@ services:
       - "3002:3002"
     environment:
       - NODE_ENV=development
-      - DB_HOST=patient-record-db
-      - DB_PORT=5432
-      - DB_USER=patient-user
-      - DB_PASSWORD=password
-      - DB_NAME=patient_db
-    depends_on:
-      - patient-record-db
     networks:
       - health-sync-network
 
@@ -43,19 +36,6 @@ services:
     networks:
       - health-sync-network
 
-  patient-record-db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: patient-user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: patient_db
-    volumes:
-      - patient-db-data:/var/lib/postgresql/data
-    networks:
-      - health-sync-network
-    ports:
-      - "5434:5432"
-
   notification-db:
     image: postgres:latest
     environment:
@@ -70,8 +50,6 @@ services:
       - "5435:5432"
 
 volumes:
-  auth-db-data:
-  patient-db-data:
   notification-db-data:
 
 networks:

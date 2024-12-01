@@ -1,26 +1,85 @@
-const Joi = require("joi");
+const mongoose = require("mongoose");
+const validator = require("validator");
 
-const patientSchema = Joi.object({
-  name: Joi.string().required(),
-  age: Joi.number().integer().min(0).required(),
-  gender: Joi.string().valid("male", "female", "other").required(),
-  contact: Joi.string().required(),
-  address: Joi.string().required(),
-  medicalHistory: Joi.array().items(Joi.string()),
-  prescriptions: Joi.array().items(
-    Joi.object({
-      drug: Joi.string().required(),
-      dosage: Joi.string().required(),
-      frequency: Joi.string().required(),
-    }),
-  ),
-  labResults: Joi.array().items(
-    Joi.object({
-      testName: Joi.string().required(),
-      date: Joi.string().required(),
-      result: Joi.string().required(),
-    }),
-  ),
+// Prescription Schema
+const prescriptionSchema = new mongoose.Schema({
+  drug: {
+    type: String,
+    required: [true, "Prescription must include a drug name"],
+  },
+  dosage: {
+    type: String,
+    required: [true, "Prescription must include a dosage"],
+  },
+  frequency: {
+    type: String,
+    required: [true, "Prescription must include a frequency"],
+  },
 });
 
-module.exports = { patientSchema };
+// Lab Result Schema
+const labResultSchema = new mongoose.Schema({
+  testName: {
+    type: String,
+    required: [true, "Lab result must include a test name"],
+  },
+  date: {
+    type: String,
+    required: [true, "Lab result must include a date"],
+  },
+  result: {
+    type: String,
+    required: [true, "Lab result must include a result"],
+  },
+});
+
+// Patient Schema
+const patientSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Patient must have a name"],
+  },
+  age: {
+    type: Number,
+    required: [true, "Patient must have an age"],
+    min: [0, "Age must be greater than or equal to 0"],
+    max: [150, "Age must be less than or equal to 150"],
+  },
+  gender: {
+    type: String,
+    required: [true, "Patient must have a gender"],
+    enum: {
+      values: ["male", "female"],
+      message: "Gender must be either 'male', 'female'",
+    },
+  },
+  email: {
+    type: String,
+    required: [true, "User must have an email"],
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, "Please provide a valid email"],
+  },
+  contact: {
+    type: String,
+    required: [true, "Patient must have a contact number"],
+  },
+  address: {
+    type: String,
+    required: [true, "Patient must have an address"],
+  },
+  medicalHistory: {
+    type: [String],
+    default: [],
+  },
+  prescriptions: {
+    type: [prescriptionSchema],
+    default: [],
+  },
+  labResults: {
+    type: [labResultSchema],
+    default: [],
+  },
+});
+
+module.exports = mongoose.model("Patient", patientSchema);

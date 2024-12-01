@@ -5,7 +5,6 @@ const morgan = require("morgan");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const patientRouter = require("./routes/patientRoutes");
-const createPatientTable = require("./data/createPatientTable");
 
 /// Create an instance of Express
 const app = express();
@@ -21,13 +20,6 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
-
-/// 2). CREATE PATIENT TABLE
-const setupDatabase = async () => {
-  await createPatientTable();
-};
-
-setupDatabase();
 
 /// 2). ROUTES
 app.use("/api/v1/patients", patientRouter);

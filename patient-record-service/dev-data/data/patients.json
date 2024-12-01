@@ -1,0 +1,127 @@
+[
+    {
+      "name": "Liam Johnson",
+      "age": 50,
+      "gender": "male",
+      "contact": "liam.johnson@example.com",
+      "address": "123 Main Street, Denver, CO",
+      "email": "liam.johnson@example.com",
+      "medicalHistory": ["hypertension", "type 2 diabetes"],
+      "prescriptions": [
+        {
+          "drug": "Metformin",
+          "dosage": "500mg",
+          "frequency": "twice daily"
+        },
+        {
+          "drug": "Losartan",
+          "dosage": "50mg",
+          "frequency": "once daily"
+        }
+      ],
+      "labResults": [
+        {
+          "testName": "HbA1c",
+          "date": "2024-11-01",
+          "result": "6.5%"
+        },
+        {
+          "testName": "Cholesterol",
+          "date": "2024-10-20",
+          "result": "Borderline high"
+        }
+      ]
+    },
+    {
+      "name": "Olivia Thompson",
+      "age": 29,
+      "gender": "female",
+      "contact": "olivia.thompson@example.com",
+      "address": "456 Elm Street, Seattle, WA",
+      "email": "olivia.thompson@example.com",
+      "medicalHistory": ["asthma"],
+      "prescriptions": [
+        {
+          "drug": "Albuterol",
+          "dosage": "90mcg",
+          "frequency": "as needed"
+        }
+      ],
+      "labResults": [
+        {
+          "testName": "Pulmonary Function Test",
+          "date": "2024-10-30",
+          "result": "Normal"
+        }
+      ]
+    },
+    {
+      "name": "Ethan Miller",
+      "age": 62,
+      "gender": "male",
+      "contact": "ethan.miller@example.com",
+      "address": "789 Pine Lane, Austin, TX",
+      "email": "ethan.miller@example.com",
+      "medicalHistory": ["high cholesterol"],
+      "prescriptions": [
+        {
+          "drug": "Atorvastatin",
+          "dosage": "20mg",
+          "frequency": "once daily"
+        }
+      ],
+      "labResults": [
+        {
+          "testName": "Lipid Panel",
+          "date": "2024-11-05",
+          "result": "Elevated LDL"
+        }
+      ]
+    },
+    {
+      "name": "Sophia Wilson",
+      "age": 40,
+      "gender": "female",
+      "contact": "sophia.wilson@example.com",
+      "address": "321 Birch Avenue, Orlando, FL",
+      "email": "sophia.wilson@example.com",
+      "medicalHistory": ["migraines"],
+      "prescriptions": [
+        {
+          "drug": "Sumatriptan",
+          "dosage": "50mg",
+          "frequency": "as needed"
+        }
+      ],
+      "labResults": [
+        {
+          "testName": "MRI Brain",
+          "date": "2024-10-10",
+          "result": "Normal"
+        }
+      ]
+    },
+    {
+      "name": "Mia Brown",
+      "age": 35,
+      "gender": "female",
+      "contact": "mia.brown@example.com",
+      "address": "654 Cedar Drive, Phoenix, AZ",
+      "email": "mia.brown@example.com",
+      "medicalHistory": ["iron deficiency anemia"],
+      "prescriptions": [
+        {
+          "drug": "Ferrous Sulfate",
+          "dosage": "325mg",
+          "frequency": "once daily"
+        }
+      ],
+      "labResults": [
+        {
+          "testName": "CBC",
+          "date": "2024-10-15",
+          "result": "Low hemoglobin"
+        }
+      ]
+    }
+  ]

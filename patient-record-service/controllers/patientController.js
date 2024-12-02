@@ -4,14 +4,14 @@ const AppError = require("../utils/appError");
 
 exports.getAllPatients = catchAsync(async (req, res, next) => {
   ///// Get all patients
-  const tours = await Patient.find();
+  const patients = await Patient.find();
 
   ///// SEND RESPONSE
   res.status(200).json({
     status: "success",
-    results: tours.length,
+    results: patients.length,
     data: {
-      tours,
+      patients,
     },
   });
 });

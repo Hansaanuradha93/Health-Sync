@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const dotenv = require("dotenv");
-// const { connectDB } = require("./db/db");
+const { connectDB } = require("./db/db");
 
 /// Handle all uncaught exceptions
 process.on("uncaughtException", (err) => {
@@ -12,11 +12,11 @@ process.on("uncaughtException", (err) => {
 /// Path for application configuration
 dotenv.config({ path: "./config.env" });
 
-// /// Require the app
+/// Require the app
 const app = require("./app");
 
-// /// Connect to the database
-// connectDB();
+/// Connect to the database
+connectDB();
 
 /// Run the server
 const port = process.env.PORT || 3004;

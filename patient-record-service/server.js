@@ -19,7 +19,7 @@ const app = require("./app");
 connectDB();
 
 /// Run the server
-const port = process.env.PORT;
+const port = process.env.PORT || 3002;
 const server = app.listen(port, () => {
   console.log(`listening on port ${port}...`);
 });

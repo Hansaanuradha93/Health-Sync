@@ -1,0 +1,50 @@
+[
+    {
+      "patientId": "674c894903747970f19ce09e",
+      "doctor": "Dr. Sarah Thompson",
+      "date": "2024-12-05",
+      "time": "14:30",
+      "status": "scheduled",
+      "email": "liam.johnson@example.com"
+    },
+    {
+      "patientId": "674c894903747970f19ce0a6",
+      "doctor": "Dr. Emily Williams",
+      "date": "2024-12-06",
+      "time": "10:00",
+      "status": "scheduled",
+      "email": "ethan.miller@example.com"
+    },
+    {
+      "patientId": "674c894903747970f19ce0a9",
+      "doctor": "Dr. James Martin",
+      "date": "2024-12-07",
+      "time": "09:30",
+      "status": "scheduled",
+      "email": "sophia.wilson@example.com"
+    },
+    {
+      "patientId": "674c894903747970f19ce0ac",
+      "doctor": "Dr. Anna White",
+      "date": "2024-12-08",
+      "time": "15:00",
+      "status": "scheduled",
+      "email": "mia.brown@example.com"
+    },
+    {
+      "patientId": "674c894903747970f19ce0a3",
+      "doctor": "Dr. John Green",
+      "date": "2024-12-09",
+      "time": "11:00",
+      "status": "scheduled",
+      "email": "olivia.thompson@example.com"
+    },
+    {
+      "patientId": "674c8bc7570078a7b10b72bb",
+      "doctor": "Dr. Jessica Lee",
+      "date": "2024-12-10",
+      "time": "16:00",
+      "status": "scheduled",
+      "email": "mia1.brown1@example.com"
+    }
+  ]

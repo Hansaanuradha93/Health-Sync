@@ -25,7 +25,10 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
   }
 
   // Create appointment
-  const appointment = await Appointment.create(req.body);
+  const appointment = await Appointment.create({
+    ...req.body,
+    email: patient.email, // Add patient's email to the appointment
+  });
 
   // Trigger notification
   // await sendNotification({

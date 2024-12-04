@@ -3,7 +3,8 @@ const AppError = require("../utils/appError");
 
 /// Get all appointments
 exports.sendNotification = catchAsync(async (req, res, next) => {
-  res.status(500).json({
+  console.log(req.body);
+  res.status(200).json({
     status: "not implemented",
   });
 });

@@ -1,20 +1,7 @@
-const axios = require("axios");
 const Appointment = require("../models/appointmentModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-
-const validatePatient = async (patientId) => {
-  const patientUrl = `${process.env.PATIENT_SERVICE_URL}/${patientId}`;
-  const response = await axios.get(patientUrl);
-  return response.data.data.patient;
-};
-
-const sendNotification = async (payload) => {
-  await axios.post(
-    `${process.env.NOTIFICATION_SERVICE_URL}/notifications`,
-    payload,
-  );
-};
+const { validatePatient, notifyPatient } = require("../utils/helper");
 
 // Create a new appointment
 exports.createAppointment = catchAsync(async (req, res, next) => {
@@ -27,15 +14,11 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
   // Create appointment
   const appointment = await Appointment.create({
     ...req.body,
-    email: patient.email, // Add patient's email to the appointment
+    email: patient.email,
   });
 
   // Trigger notification
-  // await sendNotification({
-  //   type: "appointment_created",
-  //   message: `Appointment scheduled for ${patient.name}`,
-  //   patientId: req.body.patientId,
-  // });
+  await notifyPatient(appointment, "created");
 
   res.status(201).json({
     status: "success",
@@ -76,6 +59,9 @@ exports.updateAppointment = catchAsync(async (req, res, next) => {
   if (!appointment) {
     return next(new AppError("Appointment not found", 404));
   }
+
+  // Notify patient about the update
+  await notifyPatient(appointment, "updated");
 
   res.status(200).json({
     status: "success",

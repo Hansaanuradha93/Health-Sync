@@ -39,6 +39,17 @@ services:
     depends_on:
       - patient-record-service
       - notification-service
+      - doctor-service
+    networks:
+      - health-sync-network
+  
+  doctor-service:
+    build:
+      context: ./doctor-service
+    ports:
+      - "3005:3005"
+    env_file:
+      - ./doctor-service/config.env
     networks:
       - health-sync-network
 

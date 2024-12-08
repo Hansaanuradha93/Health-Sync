@@ -1,19 +1,34 @@
 const Appointment = require("../models/appointmentModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const { validatePatient, notifyPatient } = require("../utils/helper");
+const {
+  validatePatient,
+  validateDoctor,
+  notifyPatient,
+} = require("../utils/helper");
 
 // Create a new appointment
 exports.createAppointment = catchAsync(async (req, res, next) => {
+  const { patientId, doctorId, date, time, status } = req.body;
+
   // Validate patient
-  const patient = await validatePatient(req.body.patientId);
+  const patient = await validatePatient(patientId);
   if (!patient) {
     return next(new AppError("Patient not found", 404));
   }
 
+  const doctor = await validateDoctor(doctorId, date, time);
+  if (!doctor) {
+    return next(new AppError("Doctctor is not available", 404));
+  }
+
   // Create appointment
   const appointment = await Appointment.create({
-    ...req.body,
+    patientId,
+    doctorId,
+    date,
+    time,
+    status,
     email: patient.email,
   });
 
@@ -58,6 +73,16 @@ exports.updateAppointment = catchAsync(async (req, res, next) => {
 
   if (!appointment) {
     return next(new AppError("Appointment not found", 404));
+  }
+
+  // Check doctor availability
+  const doctor = await validateDoctor(
+    appointment.doctorId,
+    appointment.date,
+    appointment.time,
+  );
+  if (!doctor) {
+    return next(new AppError("Doctctor is not available", 404));
   }
 
   // Notify patient about the update

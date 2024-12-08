@@ -3,6 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const { signToken, verifyToken } = require("../utils/jwtUtils");
 
+// Register user
 exports.register = catchAsync(async (req, res, next) => {
   const user = await User.create({
     name: req.body.name,
@@ -22,6 +23,7 @@ exports.register = catchAsync(async (req, res, next) => {
   });
 });
 
+// Login user
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -44,3 +46,10 @@ exports.login = async (req, res, next) => {
     token,
   });
 };
+
+// Verify token
+exports.verifyToken = catchAsync(async (req, res) => {
+  const { token } = req.body;
+  const decoded = verifyToken(token);
+  res.status(200).json({ isValid: true, user: decoded });
+});

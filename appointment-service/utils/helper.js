@@ -43,22 +43,22 @@ const generateNotificationContent = (appointment, operationType) => {
 
   if (operationType === "created") {
     subject = "Appointment Confirmation";
-    message = `Your appointment with Dr. ${doctorId} has been scheduled on ${date} at ${time}.`;
+    message = `Your appointment has been scheduled on ${date} at ${time}.`;
   } else if (operationType === "updated") {
     subject = "Appointment Updated";
 
     switch (status) {
       case "scheduled":
-        message = `Your appointment with ${doctorId} has been re-scheduled to ${date} at ${time}.`;
+        message = `Your appointment has been re-scheduled to ${date} at ${time}.`;
         break;
       case "completed":
-        message = `Your appointment with ${doctorId} on ${date} has been marked as completed.`;
+        message = `Your appointment on ${date} has been marked as completed.`;
         break;
       case "cancelled":
-        message = `Your appointment with ${doctorId} on ${date} has been cancelled.`;
+        message = `Your appointment on ${date} has been cancelled.`;
         break;
       default:
-        message = `Your appointment with ${doctorId} has been updated.`;
+        message = `Your appointment has been updated.`;
     }
   } else {
     throw new Error(

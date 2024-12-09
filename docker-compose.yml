@@ -1,4 +1,14 @@
 services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./api-gateway/config.env
+    networks:
+      - health-sync-network
+  
   authentication-service:
     build:
       context: ./authentication-service
@@ -18,7 +28,6 @@ services:
       - ./patient-record-service/config.env
     networks:
       - health-sync-network
-
   notification-service:
     build:
       context: ./notification-service

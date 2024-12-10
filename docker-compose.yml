@@ -1,5 +1,6 @@
 services:
   api-gateway:
+    container_name: api-gateway
     build:
       context: ./api-gateway
     ports:
@@ -10,6 +11,7 @@ services:
       - health-sync-network
   
   authentication-service:
+    container_name: authentication-service
     build:
       context: ./authentication-service
     ports:
@@ -20,6 +22,7 @@ services:
       - health-sync-network
 
   patient-record-service:
+    container_name: patient-record-service
     build:
       context: ./patient-record-service
     ports:
@@ -28,7 +31,9 @@ services:
       - ./patient-record-service/config.env
     networks:
       - health-sync-network
+  
   notification-service:
+    container_name: notification-service
     build:
       context: ./notification-service
     ports:
@@ -39,6 +44,7 @@ services:
       - health-sync-network
 
   appointment-service:
+    container_name: appointment-service
     build:
       context: ./appointment-service
     ports:
@@ -53,6 +59,7 @@ services:
       - health-sync-network
   
   doctor-service:
+    container_name: doctor-service
     build:
       context: ./doctor-service
     ports:

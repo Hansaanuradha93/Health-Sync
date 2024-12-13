@@ -14,12 +14,11 @@ spec:
     spec:
       containers:
         - name: doctor-service
-          image: doctor-service
+          image: 314146301712.dkr.ecr.us-west-1.amazonaws.com/doctor-service:latest
           ports:
             - containerPort: 3005
-          envFrom:
-            - configMapRef:
-                name: microservices-config
+      imagePullSecrets:
+        - name: ecr-credentials
 ---
 apiVersion: v1
 kind: Service

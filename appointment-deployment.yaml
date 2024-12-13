@@ -14,12 +14,11 @@ spec:
     spec:
       containers:
         - name: appointment-service
-          image: appointment-service
+          image: 314146301712.dkr.ecr.us-west-1.amazonaws.com/appointment-service:latest
           ports:
             - containerPort: 3004
-          envFrom:
-            - configMapRef:
-                name: microservices-config
+      imagePullSecrets:
+        - name: ecr-credentials
 ---
 apiVersion: v1
 kind: Service

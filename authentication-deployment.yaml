@@ -14,12 +14,11 @@ spec:
     spec:
       containers:
         - name: authentication-service
-          image: authentication-service
+          image: 314146301712.dkr.ecr.us-west-1.amazonaws.com/authentication-service:latest
           ports:
             - containerPort: 3001
-          envFrom:
-            - configMapRef:
-                name: microservices-config
+      imagePullSecrets:
+        - name: ecr-credentials
 ---
 apiVersion: v1
 kind: Service

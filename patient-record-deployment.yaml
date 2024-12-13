@@ -14,12 +14,11 @@ spec:
     spec:
       containers:
         - name: patient-record-service
-          image: patient-record-service
+          image: 314146301712.dkr.ecr.us-west-1.amazonaws.com/patient-record-service:latest
           ports:
             - containerPort: 3002
-          envFrom:
-            - configMapRef:
-                name: microservices-config
+      imagePullSecrets:
+        - name: ecr-credentials
 ---
 apiVersion: v1
 kind: Service

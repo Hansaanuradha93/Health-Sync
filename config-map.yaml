@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: microservices-config
 data:
-  AUTH_SERVICE_URL: "http://authentication-service:3001/api/v1/auth"
-  PATIENT_SERVICE_URL: "http://patient-record-service:3002/api/v1/patients"
-  NOTIFICATION_SERVICE_URL: "http://notification-service:3003/api/v1/notifications"
-  DOCTOR_SERVICE_URL: "http://doctor-service:3005/api/v1/doctors"
+  AUTH_SERVICE_URL: http://authentication-service:3001/api/v1/auth
+  PATIENT_SERVICE_URL: http://patient-record-service:3002/api/v1/patients
+  NOTIFICATION_SERVICE_URL: http://notification-service:3003/api/v1/notifications
+  APPOINTMENT_SERVICE_URL: http://appointment-service:3004/api/v1/appointments
+  DOCTOR_SERVICE_URL: http://doctor-service:3005/api/v1/doctors

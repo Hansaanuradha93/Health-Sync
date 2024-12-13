@@ -15,6 +15,7 @@ spec:
       containers:
         - name: patient-record-service
           image: 314146301712.dkr.ecr.us-west-1.amazonaws.com/patient-record-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3002
       imagePullSecrets:

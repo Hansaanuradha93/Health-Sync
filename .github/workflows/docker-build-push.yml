@@ -14,6 +14,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Set up Node.js environment for linting and testing
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run Linting
+      - name: Lint Code
+        run: npm run lint
+
+      # Run Tests
+      - name: Run Tests
+        run: npm test
+
       # Step 2: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2

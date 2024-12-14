@@ -14,21 +14,39 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js environment for linting and testing
+      # Setp 2: Set up Node.js environment for linting and testing
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "16"
 
-      - name: Install dependencies
+      # Step 3: Install dependencies for each microservice
+      - name: Install dependencies for authentication-service
         run: |
-          cd authentication-service && npm install
-          cd patient-record-service && npm install
-          cd notification-service && npm install
-          cd appointment-service && npm install
-          cd doctor-service && npm install
+          cd authentication-service
+          npm install
 
-      # Step 2: Configure AWS credentials
+      - name: Install dependencies for patient-record-service
+        run: |
+          cd patient-record-service
+          npm install
+
+      - name: Install dependencies for notification-service
+        run: |
+          cd notification-service
+          npm install
+
+      - name: Install dependencies for appointment-service
+        run: |
+          cd appointment-service
+          npm install
+
+      - name: Install dependencies for doctor-service
+        run: |
+          cd doctor-service
+          npm install
+
+      # Step 4: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -36,12 +54,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Step 3: Log in to Amazon ECR
+      # Step 5: Log in to Amazon ECR
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Step 4: Build and push Docker images
+      # Step 6: Build and push Docker images
       - name: Build and push Docker images
         run: |
           IMAGE_TAG=$(date +%Y%m%d%H%M%S)

@@ -20,17 +20,83 @@ jobs:
         with:
           node-version: "16"
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+      # Step 3: Install dependencies for each microservice
+      - name: Install dependencies for authentication-service
+        run: |
+          cd authentication-service
+          npm install
 
-      # Run Linting
-      - name: Lint Code
-        run: npm run lint
+      - name: Install dependencies for patient-record-service
+        run: |
+          cd patient-record-service
+          npm install
 
-      # Run Tests
-      - name: Run Tests
-        run: npm test
+      - name: Install dependencies for notification-service
+        run: |
+          cd notification-service
+          npm install
+
+      - name: Install dependencies for appointment-service
+        run: |
+          cd appointment-service
+          npm install
+
+      - name: Install dependencies for doctor-service
+        run: |
+          cd doctor-service
+          npm install
+
+      # Step 4: Run Linting (Optional)
+      - name: Run Linting for authentication-service
+        run: |
+          cd authentication-service
+          npm run lint
+
+      - name: Run Linting for patient-record-service
+        run: |
+          cd patient-record-service
+          npm run lint
+
+      - name: Run Linting for notification-service
+        run: |
+          cd notification-service
+          npm run lint
+
+      - name: Run Linting for appointment-service
+        run: |
+          cd appointment-service
+          npm run lint
+
+      - name: Run Linting for doctor-service
+        run: |
+          cd doctor-service
+          npm run lint
+
+      # Step 5: Run Tests (Optional)
+      - name: Run Tests for authentication-service
+        run: |
+          cd authentication-service
+          npm test
+
+      - name: Run Tests for patient-record-service
+        run: |
+          cd patient-record-service
+          npm test
+
+      - name: Run Tests for notification-service
+        run: |
+          cd notification-service
+          npm test
+
+      - name: Run Tests for appointment-service
+        run: |
+          cd appointment-service
+          npm test
+
+      - name: Run Tests for doctor-service
+        run: |
+          cd doctor-service
+          npm test
 
       # Step 2: Configure AWS credentials
       - name: Configure AWS credentials

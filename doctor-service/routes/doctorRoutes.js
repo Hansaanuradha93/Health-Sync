@@ -7,7 +7,6 @@ const {
   getDoctorById,
   updateDoctor,
   deleteDoctor,
-  checkAvailability,
 } = require("../controllers/doctorController");
 
 router.route("/").get(getAllDoctors).post(createDoctor);
@@ -17,7 +16,5 @@ router
   .get(getDoctorById)
   .patch(updateDoctor)
   .delete(deleteDoctor);
-
-router.route("/:id/availability").post(checkAvailability);
 
 module.exports = router;

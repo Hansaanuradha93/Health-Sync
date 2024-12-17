@@ -17,9 +17,10 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
     return next(new AppError("Patient not found", 404));
   }
 
+  // Validate doctor
   const doctor = await validateDoctor(doctorId, date, time);
   if (!doctor) {
-    return next(new AppError("Doctctor is not available", 404));
+    return next(new AppError("Doctor is not available", 404));
   }
 
   // Create appointment

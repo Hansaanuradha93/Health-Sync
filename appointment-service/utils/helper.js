@@ -1,16 +1,10 @@
 const axios = require("axios");
 
 // Validate doctor
-exports.validateDoctor = async (doctorId, date, time) => {
-  const doctorUrl = `${process.env.DOCTOR_SERVICE_URL}/${doctorId}/availability`;
-
-  const response = await axios.post(doctorUrl, { date, time });
-
-  if (!response.data.available) {
-    throw new Error("Doctor is not available at the selected time");
-  }
-
-  return response.data.doctor;
+exports.validateDoctor = async (doctorId) => {
+  const doctorUrl = `${process.env.DOCTOR_SERVICE_URL}/${doctorId}`;
+  const response = await axios.get(doctorUrl);
+  return response.data.data.doctor;
 };
 
 // Validate patient

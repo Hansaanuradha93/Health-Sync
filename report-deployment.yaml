@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: report-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: report-service
+  template:
+    metadata:
+      labels:
+        app: report-service
+    spec:
+      containers:
+        - name: report-service
+          image: 314146301712.dkr.ecr.us-west-1.amazonaws.com/report-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3007
+      imagePullSecrets:
+        - name: ecr-credentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: report-service
+spec:
+  selector:
+    app: report-service
+  ports:
+    - protocol: TCP
+      port: 3007
+      targetPort: 3007

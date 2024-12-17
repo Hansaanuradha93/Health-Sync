@@ -12,7 +12,7 @@ const appointmentSchema = new mongoose.Schema({
     required: [true, "Appointment must have a doctor"],
   },
   date: {
-    type: String,
+    type: Date,
     required: [true, "Appointment must have a date"],
   },
   time: {
@@ -25,17 +25,21 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["scheduled", "completed", "cancelled"],
     default: "scheduled",
   },
+  symptoms: {
+    type: [String],
+    default: [],
+  },
   email: {
     type: String,
     required: [true, "Patient's email must be included"],
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 

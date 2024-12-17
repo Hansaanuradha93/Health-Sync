@@ -9,7 +9,7 @@ const {
 
 // Create a new appointment
 exports.createAppointment = catchAsync(async (req, res, next) => {
-  const { patientId, doctorId, date, time, status } = req.body;
+  const { patientId, doctorId, date, time, status, symptoms } = req.body;
 
   // Validate patient
   const patient = await validatePatient(patientId);
@@ -30,6 +30,7 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
     date,
     time,
     status,
+    symptoms,
     email: patient.email,
   });
 

@@ -1,38 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-// Prescription Schema
-const prescriptionSchema = new mongoose.Schema({
-  drug: {
-    type: String,
-    required: [true, "Prescription must include a drug name"],
-  },
-  dosage: {
-    type: String,
-    required: [true, "Prescription must include a dosage"],
-  },
-  frequency: {
-    type: String,
-    required: [true, "Prescription must include a frequency"],
-  },
-});
-
-// Lab Result Schema
-const labResultSchema = new mongoose.Schema({
-  testName: {
-    type: String,
-    required: [true, "Lab result must include a test name"],
-  },
-  date: {
-    type: String,
-    required: [true, "Lab result must include a date"],
-  },
-  result: {
-    type: String,
-    required: [true, "Lab result must include a result"],
-  },
-});
-
 // Patient Schema
 const patientSchema = new mongoose.Schema({
   name: {
@@ -70,14 +38,6 @@ const patientSchema = new mongoose.Schema({
   },
   medicalHistory: {
     type: [String],
-    default: [],
-  },
-  prescriptions: {
-    type: [prescriptionSchema],
-    default: [],
-  },
-  labResults: {
-    type: [labResultSchema],
     default: [],
   },
 });

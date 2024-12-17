@@ -6,6 +6,7 @@ const {
   connectPatientService,
   connectAppointmentService,
   connectDoctorService,
+  connectReportService,
 } = require("../controllers/gatewayController");
 
 // Patient Routes
@@ -16,5 +17,8 @@ router.use("/api/v1/appointments", authenticate, connectAppointmentService);
 
 // Doctor Routes
 router.use("/api/v1/doctors", authenticate, connectDoctorService);
+
+// Report Routes
+router.use("/api/v1/reports", authenticate, connectReportService);
 
 module.exports = router;

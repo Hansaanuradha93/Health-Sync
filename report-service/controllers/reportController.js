@@ -5,9 +5,9 @@ const Patient = require("../models/patientModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
-// Create a new appointment
+// Generate reports
 exports.aggregateAndStoreData = catchAsync(async (req, res, next) => {
-  res.status(404).json({
+  res.status(201).json({
     status: "not implemented",
   });
 });

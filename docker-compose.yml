@@ -69,6 +69,17 @@ services:
     networks:
       - health-sync-network
 
+  report-service:
+    container_name: report-service
+    build:
+      context: ./report-service
+    ports:
+      - "3007:3007"
+    env_file:
+      - ./report-service/config.env
+    networks:
+      - health-sync-network
+
 networks:
   health-sync-network:
     driver: bridge

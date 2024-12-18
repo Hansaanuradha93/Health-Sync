@@ -15,7 +15,7 @@ dotenv.config({ path: "./config.env" });
 /// Require the app
 const app = require("./app");
 
-/// Connect to the database
+/// Connect to mongodb database
 connectDB();
 
 /// Run the server

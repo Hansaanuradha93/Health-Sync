@@ -1,9 +1,9 @@
 const Appointment = require("../models/appointmentModel");
-const Doctor = require("../models/doctorModel");
-const Patient = require("../models/patientModel");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+
+const pool = require("../db/redshift-db");
 
 /**
  * Aggregate symptoms by doctor's specialization.
@@ -79,26 +79,15 @@ const aggregateAppointmentFrequency = async () => {
 
 // Generate reports
 exports.aggregateAndStoreData = catchAsync(async (req, res, next) => {
-  // Step 1: Aggregate appointments per doctor
+  // Step 1: Aggregate data
   const appointmentsPerDoctor = await aggregateAppointmentsPerDoctor();
-  console.log("Appointments Per Doctor:", appointmentsPerDoctor);
-
-  // Step 2: Aggregate appointment frequency over time
   const appointmentFrequency = await aggregateAppointmentFrequency();
-  console.log("Appointment Frequency:", appointmentFrequency);
-
-  if (!appointmentsPerDoctor.length && !appointmentFrequency.length) {
-    return next(
-      new AppError("No appointment data available for reporting.", 404)
-    );
-  }
-
-  // Step 3: Aggregate symptoms data by specialization
   const aggregatedSymptoms = await aggregateSymptomsBySpecialization();
 
-  if (!aggregatedSymptoms || aggregatedSymptoms.length === 0) {
-    return next(new AppError("No data found for aggregation.", 404));
-  }
+  // Step 2: Insert data into Redshift
+  await insertDataToRedshift("appointments_per_doctor", appointmentsPerDoctor);
+  await insertDataToRedshift("appointment_frequency", appointmentFrequency);
+  await insertDataToRedshift("symptoms_by_specialization", aggregatedSymptoms);
 
   res.status(200).json({
     status: "success",
@@ -109,3 +98,45 @@ exports.aggregateAndStoreData = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+const insertDataToRedshift = async (table, data) => {
+  const client = await pool.connect();
+
+  try {
+    if (table === "appointments_per_doctor") {
+      const query =
+        "INSERT INTO appointments_per_doctor (doctor_id, total_appointments) VALUES ($1, $2)";
+      for (const record of data) {
+        await client.query(query, [record._id, record.totalAppointments]);
+      }
+    }
+
+    if (table === "appointment_frequency") {
+      const query =
+        "INSERT INTO appointment_frequency (appointment_date, total_appointments) VALUES ($1, $2)";
+      for (const record of data) {
+        await client.query(query, [record._id.date, record.totalAppointments]);
+      }
+    }
+
+    if (table === "symptoms_by_specialization") {
+      const query =
+        "INSERT INTO symptoms_by_specialization (specialization, symptom, count) VALUES ($1, $2, $3)";
+      for (const record of data) {
+        const specialization = record._id;
+        for (const symptom of record.symptoms) {
+          await client.query(query, [
+            specialization,
+            symptom.symptom,
+            symptom.count,
+          ]);
+        }
+      }
+    }
+    console.log(`Data inserted into ${table}`);
+  } catch (err) {
+    console.error(`Error inserting data into ${table}`, err);
+  } finally {
+    await client.end();
+  }
+};

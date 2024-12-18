@@ -104,24 +104,42 @@ const insertDataToRedshift = async (table, data) => {
 
   try {
     if (table === "appointments_per_doctor") {
-      const query =
-        "INSERT INTO appointments_per_doctor (doctor_id, total_appointments) VALUES ($1, $2)";
+      const query = `
+        MERGE INTO appointments_per_doctor USING (
+          SELECT $1::VARCHAR AS doctor_id, $2::INT AS total_appointments
+        ) AS incoming
+        ON appointments_per_doctor.doctor_id = incoming.doctor_id
+        WHEN MATCHED THEN UPDATE SET total_appointments = incoming.total_appointments
+        WHEN NOT MATCHED THEN INSERT (doctor_id, total_appointments) VALUES (incoming.doctor_id, incoming.total_appointments);
+      `;
       for (const record of data) {
         await client.query(query, [record._id, record.totalAppointments]);
       }
     }
 
     if (table === "appointment_frequency") {
-      const query =
-        "INSERT INTO appointment_frequency (appointment_date, total_appointments) VALUES ($1, $2)";
+      const query = `
+        MERGE INTO appointment_frequency USING (
+          SELECT $1::DATE AS appointment_date, $2::INT AS total_appointments
+        ) AS incoming
+        ON appointment_frequency.appointment_date = incoming.appointment_date
+        WHEN MATCHED THEN UPDATE SET total_appointments = incoming.total_appointments
+        WHEN NOT MATCHED THEN INSERT (appointment_date, total_appointments) VALUES (incoming.appointment_date, incoming.total_appointments);
+      `;
       for (const record of data) {
         await client.query(query, [record._id.date, record.totalAppointments]);
       }
     }
 
     if (table === "symptoms_by_specialization") {
-      const query =
-        "INSERT INTO symptoms_by_specialization (specialization, symptom, count) VALUES ($1, $2, $3)";
+      const query = `
+        MERGE INTO symptoms_by_specialization USING (
+          SELECT $1::VARCHAR AS specialization, $2::VARCHAR AS symptom, $3::INT AS count
+        ) AS incoming
+        ON symptoms_by_specialization.specialization = incoming.specialization AND symptoms_by_specialization.symptom = incoming.symptom
+        WHEN MATCHED THEN UPDATE SET count = incoming.count
+        WHEN NOT MATCHED THEN INSERT (specialization, symptom, count) VALUES (incoming.specialization, incoming.symptom, incoming.count);
+      `;
       for (const record of data) {
         const specialization = record._id;
         for (const symptom of record.symptoms) {

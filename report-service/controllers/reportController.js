@@ -99,6 +99,48 @@ exports.aggregateAndStoreData = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.executeAggregationJob = async () => {
+  try {
+    // Step 1: Aggregate data
+    const appointmentsPerDoctor = await aggregateAppointmentsPerDoctor();
+    const appointmentFrequency = await aggregateAppointmentFrequency();
+    const aggregatedSymptoms = await aggregateSymptomsBySpecialization();
+
+    // Step 2: Insert data into Redshift
+    await insertDataToRedshift(
+      "appointments_per_doctor",
+      appointmentsPerDoctor
+    );
+    await insertDataToRedshift("appointment_frequency", appointmentFrequency);
+    await insertDataToRedshift(
+      "symptoms_by_specialization",
+      aggregatedSymptoms
+    );
+
+    // Log results when called by the scheduler
+    console.log("Data aggregation and storage completed successfully.");
+
+    // Respond when called by an HTTP request
+    if (res) {
+      return res.status(200).json({
+        status: "success",
+        data: {
+          appointmentsPerDoctor,
+          appointmentFrequency,
+          aggregatedSymptoms,
+        },
+      });
+    }
+  } catch (err) {
+    console.error("Error in data aggregation and storage:", err);
+
+    // Respond with error if triggered by HTTP
+    if (res && next) {
+      return next(new AppError("Error aggregating and storing data", 500));
+    }
+  }
+};
+
 const insertDataToRedshift = async (table, data) => {
   const client = await pool.connect();
 

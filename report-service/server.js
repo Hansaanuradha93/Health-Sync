@@ -18,6 +18,9 @@ const app = require("./app");
 /// Connect to mongodb database
 connectDB();
 
+/// Initialize the aggregation job
+require("./scheduler");
+
 /// Run the server
 const port = process.env.PORT || 3007;
 const server = app.listen(port, () => {

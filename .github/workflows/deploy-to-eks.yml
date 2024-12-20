@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Configure AWS Credentials
+      # Step 2: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -41,8 +41,10 @@ jobs:
           kubectl apply -f patient-record-deployment.yaml
           kubectl apply -f report-deployment.yaml
 
-        # Step 4: Verify the deployement
-      - name: Check the pods
+      # Step 5: Verify the deployment
+      - name: Check the pods and services
         run: |
-          kubectl get pods
-          kubectl get svc
+          echo "Checking the status of pods..."
+          kubectl get pods -o wide
+          echo "Checking the status of services..."
+          kubectl get svc -o wide

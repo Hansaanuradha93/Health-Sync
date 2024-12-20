@@ -40,11 +40,3 @@ jobs:
           kubectl apply -f notification-deployment.yaml
           kubectl apply -f patient-record-deployment.yaml
           kubectl apply -f report-deployment.yaml
-
-      # Step 5: Verify the deployment
-      - name: Check the pods and services
-        run: |
-          echo "Checking the status of pods..."
-          kubectl get pods -o wide || true
-          echo "Checking the status of services..."
-          kubectl get svc -o wide || true

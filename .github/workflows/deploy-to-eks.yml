@@ -40,3 +40,30 @@ jobs:
           kubectl apply -f notification-deployment.yaml
           kubectl apply -f patient-record-deployment.yaml
           kubectl apply -f report-deployment.yaml
+
+      # Step 5: Wait for deployments to be ready
+      - name: Wait for pods to be ready
+        run: |
+          kubectl wait --for=condition=ready pod -l app=api-gateway --timeout=120s
+          kubectl wait --for=condition=ready pod -l app=patient-record-service --timeout=120s
+          kubectl wait --for=condition=ready pod -l app=appointment-service --timeout=120s
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: deploy-to-eks
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Run Integration Tests
+      - name: Run integration tests
+        run: |
+          curl -X http://ad36db3775bff4ddf98251312f2a7e8a-1830202517.us-west-1.elb.amazonaws.com:8080/api/v1/patients \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGM4YTY1MmVkNTBiMmM3YmMyMTJjNyIsImlhdCI6MTczNDQzOTUyMiwiZXhwIjoxNzM1MDQ0MzIyfQ.LnBgnQjPK6mPKX8sCXalfJGunK8WZdC_xzNg_TEslWk" \
+            -H "Content-Type: application/json"
+
+          curl -X GET http://ad36db3775bff4ddf98251312f2a7e8a-1830202517.us-west-1.elb.amazonaws.com:8080/api/v1/appointments \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGM4YTY1MmVkNTBiMmM3YmMyMTJjNyIsImlhdCI6MTczNDQzOTUyMiwiZXhwIjoxNzM1MDQ0MzIyfQ.LnBgnQjPK6mPKX8sCXalfJGunK8WZdC_xzNg_TEslWk" \
+            -H "Content-Type: application/json"

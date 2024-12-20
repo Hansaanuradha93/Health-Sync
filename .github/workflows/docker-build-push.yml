@@ -76,7 +76,8 @@ jobs:
       # Step 3: Update kubeconfig for EKS
       - name: Update kubeconfig
         run: |
-          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name health-sync-cluster
+          # aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name health-sync-cluster
+          aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name health-sync-cluster --role-arn arn:aws:iam::314146301712:role/eks-node-role
 
       - name: Verify Kubernetes Context
         run: |

@@ -41,7 +41,8 @@ jobs:
           kubectl apply -f patient-record-deployment.yaml
           kubectl apply -f report-deployment.yaml
 
-        # Step 4: Check the pods
+        # Step 4: Verify the deployement
       - name: Check the pods
         run: |
           kubectl get pods
+          kubectl get svc

@@ -21,30 +21,15 @@ jobs:
           node-version: "16"
 
       # Step 3: Install dependencies for each microservice
-      - name: Install dependencies for authentication-service
+      - name: Install dependencies for each service
         run: |
-          cd authentication-service
-          npm install
-
-      - name: Install dependencies for patient-record-service
-        run: |
-          cd patient-record-service
-          npm install
-
-      - name: Install dependencies for notification-service
-        run: |
-          cd notification-service
-          npm install
-
-      - name: Install dependencies for appointment-service
-        run: |
-          cd appointment-service
-          npm install
-
-      - name: Install dependencies for doctor-service
-        run: |
-          cd doctor-service
-          npm install
+          SERVICES=("authentication-service" "patient-record-service" "notification-service" "appointment-service" "doctor-service" "api-gateway")
+          for SERVICE in "${SERVICES[@]}"
+          do
+            cd $SERVICE
+            npm install
+            cd ..
+          done
 
       # Step 4: Configure AWS credentials
       - name: Configure AWS credentials
@@ -59,26 +44,17 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Step 6: Build and push Docker images
+      # Step 6: Build and push Docker images with :latest tag
       - name: Build and push Docker images
         run: |
-          IMAGE_TAG=$(date +%Y%m%d%H%M%S)
           SERVICES=("authentication-service" "patient-record-service" "notification-service" "appointment-service" "doctor-service" "api-gateway")
           for SERVICE in "${SERVICES[@]}"
           do
-            docker build -t $ECR_REPOSITORY_URL/$SERVICE:$IMAGE_TAG ./$SERVICE
-            docker push $ECR_REPOSITORY_URL/$SERVICE:$IMAGE_TAG
-            echo "$SERVICE:$IMAGE_TAG" >> image-tags.txt
+            docker build -t $ECR_REPOSITORY_URL/$SERVICE:latest ./$SERVICE
+            docker push $ECR_REPOSITORY_URL/$SERVICE:latest
           done
         env:
           ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
-
-      # Save the image tags for later use in deployment
-      - name: Save image tags
-        uses: actions/upload-artifact@v3
-        with:
-          name: image-tags
-          path: image-tags.txt
 
   deploy-to-eks:
     runs-on: ubuntu-latest
@@ -89,13 +65,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Retrieve image tags
-      - name: Download image tags
-        uses: actions/download-artifact@v3
-        with:
-          name: image-tags
-
-      # Step 4: Configure AWS credentials
+      # Step 2: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -103,23 +73,24 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Step 4: Update kubeconfig for EKS
+      # Step 3: Update kubeconfig for EKS
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name health-sync-cluster
 
-      - name: Verify Kubernetes Context
-        run: kubectl config view
+      - name: Verify Kubernetes Cluster Connection
+        run: |
+          kubectl cluster-info
+          kubectl get nodes
 
+      # Step 4: Apply Kubernetes manifests
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f k8s-manifests/
-
-      # Step 5: Update Kubernetes deployments
-      - name: Deploy to EKS
-        run: |
-          while IFS= read -r line; do
-            SERVICE=$(echo $line | cut -d: -f1)
-            IMAGE_TAG=$(echo $line | cut -d: -f2)
-            kubectl set image deployment/$SERVICE $SERVICE=$ECR_REPOSITORY_URL/$SERVICE:$IMAGE_TAG
-          done < image-tags.txt
+          kubectl apply -f config-map.yaml
+          kubectl apply -f api-gateway-deployment.yaml
+          kubectl apply -f appointment-deployment.yaml
+          kubectl apply -f authentication-deployment.yaml
+          kubectl apply -f doctor-deployment.yaml
+          kubectl apply -f notification-deployment.yaml
+          kubectl apply -f patient-record-deployment.yaml
+          kubectl apply -f report-deployment.yaml

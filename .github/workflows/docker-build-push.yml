@@ -14,22 +14,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment for linting and testing
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
+      # # Step 2: Set up Node.js environment for linting and testing
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "16"
 
-      # Step 3: Install dependencies for each microservice
-      - name: Install dependencies for each service
-        run: |
-          SERVICES=("authentication-service" "patient-record-service" "notification-service" "appointment-service" "doctor-service" "api-gateway")
-          for SERVICE in "${SERVICES[@]}"
-          do
-            cd $SERVICE
-            npm install
-            cd ..
-          done
+      # # Step 3: Install dependencies for each microservice
+      # - name: Install dependencies for each service
+      #   run: |
+      #     SERVICES=("authentication-service" "patient-record-service" "notification-service" "appointment-service" "doctor-service" "api-gateway")
+      #     for SERVICE in "${SERVICES[@]}"
+      #     do
+      #       cd $SERVICE
+      #       npm install
+      #       cd ..
+      #     done
 
       # Step 4: Configure AWS credentials
       - name: Configure AWS credentials

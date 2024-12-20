@@ -3,7 +3,7 @@ name: Build, Push Docker Images to ECR, and Deploy to EKS
 on:
   push:
     branches:
-      - main
+      - cicd
 
 jobs:
   build-and-push:

@@ -91,7 +91,7 @@ jobs:
         run: |
           kubectl get nodes
 
-      # Step 4: Apply Kubernetes manifests
+      # Step 4: Apply Kubernetes manifest
       - name: Apply Kubernetes Manifests
         run: |
           kubectl apply -f config-map.yaml

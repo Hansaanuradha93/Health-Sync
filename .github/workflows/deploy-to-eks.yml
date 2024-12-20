@@ -1,11 +1,11 @@
 name: Deploy to EKS
 
-on:
-  workflow_run:
-    workflows:
-      - Build and Push Docker Images to ECR
-    types:
-      - completed
+# on:
+#   workflow_run:
+#     workflows:
+#       - Build and Push Docker Images to ECR
+#     types:
+#       - completed
 
 jobs:
   deploy-to-eks:

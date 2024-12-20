@@ -78,9 +78,17 @@ jobs:
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name health-sync-cluster
 
-      - name: Verify Kubernetes Cluster Connection
+      - name: Verify Kubernetes Context
+        run: |
+          kubectl config get-contexts
+          kubectl config current-context
+
+      - name: Check Cluster Info
         run: |
           kubectl cluster-info
+
+      - name: List Nodes
+        run: |
           kubectl get nodes
 
       # Step 4: Apply Kubernetes manifests

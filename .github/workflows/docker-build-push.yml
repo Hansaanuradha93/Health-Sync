@@ -1,4 +1,4 @@
-name: Build, Push Docker Images to ECR, and Deploy to EKS
+name: Build and Push Docker Images to ECR
 
 on:
   push:
@@ -39,12 +39,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Step 5: Log in to Amazon ECR
+      # Step 3: Log in to Amazon ECR
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Step 6: Build and push Docker images with :latest tag
+      # Step 4: Build and push Docker images
       - name: Build and push Docker images
         run: |
           SERVICES=("authentication-service" "patient-record-service" "notification-service" "appointment-service" "doctor-service" "api-gateway" "report-service")
@@ -56,50 +56,9 @@ jobs:
         env:
           ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
 
-  deploy-to-eks:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-
-    steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Configure AWS credentials
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      # Step 5: Save the artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      # Step 3: Update kubeconfig for EKS
-      - name: Update kubeconfig
-        run: |
-          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name health-sync-cluster
-          # aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name health-sync-cluster --role-arn arn:aws:iam::314146301712:role/eks-node-role
-
-      - name: Verify Kubernetes Context
-        run: |
-          kubectl config get-contexts
-          kubectl config current-context
-
-      # - name: Check Cluster Info
-      #   run: |
-      #     kubectl cluster-info
-
-      # - name: List Nodes
-      #   run: |
-      #     kubectl get nodes
-
-      # Step 4: Apply Kubernetes manifests
-      - name: Apply Kubernetes Manifests
-        run: |
-          kubectl apply -f config-map.yaml
-          kubectl apply -f api-gateway-deployment.yaml
-          kubectl apply -f appointment-deployment.yaml
-          kubectl apply -f authentication-deployment.yaml
-          kubectl apply -f doctor-deployment.yaml
-          kubectl apply -f notification-deployment.yaml
-          kubectl apply -f patient-record-deployment.yaml
-          kubectl apply -f report-deployment.yaml
+          name: build-success
+          path: ./ # You can customize this as needed

@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment for linting and testing--
+      # Step 2: Set up Node.js environment for linting and testing
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:

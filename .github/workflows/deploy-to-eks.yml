@@ -45,6 +45,6 @@ jobs:
       - name: Check the pods and services
         run: |
           echo "Checking the status of pods..."
-          kubectl get pods -o wide
+          kubectl get pods -o wide || true
           echo "Checking the status of services..."
-          kubectl get svc -o wide
+          kubectl get svc -o wide || true

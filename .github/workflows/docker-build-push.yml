@@ -84,13 +84,13 @@ jobs:
           kubectl config get-contexts
           kubectl config current-context
 
-      - name: Check Cluster Info
-        run: |
-          kubectl cluster-info
+      # - name: Check Cluster Info
+      #   run: |
+      #     kubectl cluster-info
 
-      - name: List Nodes
-        run: |
-          kubectl get nodes
+      # - name: List Nodes
+      #   run: |
+      #     kubectl get nodes
 
       # Step 4: Apply Kubernetes manifests
       - name: Apply Kubernetes Manifests

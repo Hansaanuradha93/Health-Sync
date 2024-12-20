@@ -17,3 +17,10 @@ echo "Testing /api/v1/appointments endpoint..."
 curl -X GET "$API_GATEWAY_URL/api/v1/appointments" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json"
+
+
+# Test Doctor Endpoint
+echo "Testing /api/v1/appointments endpoint..."
+curl -X GET "$API_GATEWAY_URL/api/v1/doctors" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json"

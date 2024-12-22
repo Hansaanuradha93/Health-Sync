@@ -39,7 +39,7 @@ jobs:
         env:
           ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
 
-      # Step 5: Save the artifact
+      # Step 5: Save the artifacts
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:

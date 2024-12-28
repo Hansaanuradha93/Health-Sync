@@ -23,6 +23,8 @@ router.use("/api/v1/doctors", authenticate, connectDoctorService);
 router.use("/api/v1/reports", authenticate, connectReportService);
 
 // Authentication Routes
-router.use("/api/v1/auth/verifyToken", connectAuthService);
+router.route("/api/v1/auth/verifyToken").post(connectAuthService);
+
+// router.use("/api/v1/auth", connectAuthService);
 
 module.exports = router;

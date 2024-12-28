@@ -8,7 +8,7 @@ const authenticate = catchAsync(async (req, res, next) => {
     return res.status(401).json({ status: "fail", message: "Unauthorized" });
   }
 
-  const authURL = `${process.env.AUTH_SERVICE_URL}/verifyToken`;
+  const authURL = `${process.env.AUTH_SERVICE_END_POINT_URL}/verifyToken`;
   const response = await axios.post(authURL, { token });
 
   if (response.data.isValid) {

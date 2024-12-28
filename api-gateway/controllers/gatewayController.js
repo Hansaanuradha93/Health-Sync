@@ -80,7 +80,9 @@ exports.connectReportService = catchAsync(async (req, res, next) => {
 
 exports.connectAuthService = catchAsync(async (req, res, next) => {
   const url = `${process.env.AUTH_SERVICE_URL}${req.originalUrl}`;
-  console.log(`url: ${url}`);
+  console.log(`🟢 Auth URL: ${process.env.AUTH_SERVICE_URL}`);
+  console.log(`🟣 Original: ${req.originalUrl}`);
+  console.log(`👋 URL: ${url}`);
 
   if (req.method === "POST") {
     console.log(`POST REQUEST START`);

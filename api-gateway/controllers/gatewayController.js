@@ -58,13 +58,11 @@ exports.connectDoctorService = catchAsync(async (req, res, next) => {
 
 exports.connectReportService = catchAsync(async (req, res, next) => {
   const url = `${process.env.REPORT_SERVICE_URL}${req.originalUrl}`;
-  console.log(`url: ${url}`);
 
   if (req.method === "GET") {
     const response = await axios.get(url);
     res.status(response.status).json(response.data);
   } else if (req.method === "POST") {
-    console.log(`POST REQUEST START`);
     const response = await axios.post(url, req.body);
     res.status(response.status).json(response.data);
   } else if (req.method == "PATCH") {
@@ -72,6 +70,21 @@ exports.connectReportService = catchAsync(async (req, res, next) => {
     res.status(response.status).json(response.data);
   } else if (req.method === "DELETE") {
     const response = await axios.delete(url);
+    res.status(response.status).json(response.data);
+  }
+});
+
+// http://localhost:3001/api/v1/auth/register
+// http://localhost:3001/api/v1/auth/login
+// http://localhost:3001/api/v1/auth/verifyToken
+
+exports.connectAuthService = catchAsync(async (req, res, next) => {
+  const url = `${process.env.REPORT_SERVICE_URL}${req.originalUrl}`;
+  console.log(`url: ${url}`);
+
+  if (req.method === "POST") {
+    console.log(`POST REQUEST START`);
+    const response = await axios.post(url, req.body);
     res.status(response.status).json(response.data);
   }
 });

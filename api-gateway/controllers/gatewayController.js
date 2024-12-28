@@ -79,7 +79,7 @@ exports.connectReportService = catchAsync(async (req, res, next) => {
 // http://localhost:3001/api/v1/auth/verifyToken
 
 exports.connectAuthService = catchAsync(async (req, res, next) => {
-  const url = `${process.env.REPORT_SERVICE_URL}${req.originalUrl}`;
+  const url = `${process.env.AUTH_SERVICE_URL}${req.originalUrl}`;
   console.log(`url: ${url}`);
 
   if (req.method === "POST") {

@@ -33,8 +33,10 @@ jobs:
           SERVICES=("authentication-service" "patient-record-service" "notification-service" "appointment-service" "doctor-service" "api-gateway" "report-service")
           for SERVICE in "${SERVICES[@]}"
           do
+            cd $SERVICE  # Change to the service directory
             docker build -t $ECR_REPOSITORY_URL/$SERVICE:latest ./$SERVICE
             docker push $ECR_REPOSITORY_URL/$SERVICE:latest
+            cd ..  # Return to the parent directory
           done
         env:
           ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}

@@ -4,7 +4,7 @@
 API_GATEWAY_URL="http://ad36db3775bff4ddf98251312f2a7e8a-1830202517.us-west-1.elb.amazonaws.com:8080"
 
 # Set Authorization Token
-AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGM4YTY1MmVkNTBiMmM3YmMyMTJjNyIsImlhdCI6MTczNTQwNjc0NiwiZXhwIjoxNzM2MDExNTQ2fQ.uM9GQ41e78F8IOo2KbaJ_nbilaRsfSfoiGuEdm6_MSc"
+AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGM4YTY1MmVkNTBiMmM3YmMyMTJjNyIsImlhdCI6MTczNTc5MzUzMSwiZXhwIjoxNzM2Mzk4MzMxfQ.jcKpRwhXLb63aQL9mNnwfQ8Lj1HV8WTHo2LfbJWGmBk"
 
 # Test Patients Endpoint
 echo "🟢 Testing /api/v1/patients endpoint..."
